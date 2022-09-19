@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>Hello {{ userName }}</h1>
+        <button @click="fetchTodos">fetchTodos</button>
+        <ul>
+            <li v-for="(todo,idx) in todos">
+                {{ todo.completed }}
+                <button @click="completeTodo(idx)">완료</button>
+            </li>
+        </ul>
+        <h2 :class="{ many: compledtedTodos > 5 }">
+            완료된 Todo는 총 : {{ compledtedTodos }}개 입니다.
+        </h2>
+    </div>
+
+    <script>
+        const app = new Vue({
+            el: "#app",
+            data: {
+                userName: "scalper",
+                frameworks: ['react', 'vue', 'angular'],
+                todos: []
+            },
+            computed: {
+                compledtedTodos() {
+                    return this.todos.filter(todo => todo.completed === true).length
+                }
+            },
+            methods: {
+                addItem() {
+                    this.frameworks.push(this.userName);
+                },
+                popItem() {
+                    this.frameworks.pop();
+                },
+                fetchTodos() {
+                    fetch("https://jsonplaceholder.typicode.com/todos?_start=0&_end=10")
+                    .then(res => res.json())
+                    .then(data => this.todos = data);
+                },
+                completeTodo(idx) {
+                    this.todos[idx].completed = true;
+                }
+            }
+        })
+    </script>
+    <style>
+        .many {
+            color: red;
+        }
+    </style>
+</body>
+</html>
