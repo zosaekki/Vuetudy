@@ -7,7 +7,7 @@
                 <label for="floatingInput">Email address</label>
             </div>
             <div class="form-floating">
-                <input type="password" class="form-control" id="floatingPassword" placeholder="Password" v-model="state.form.password">
+                <input type="password" class="form-control" id="floatingPassword" autocomplete="on" placeholder="Password" v-model="state.form.password">
                 <label for="floatingPassword">Password</label>
             </div>
             <div class="checkbox mb-3">
@@ -24,6 +24,7 @@
 <script>
 import axios from 'axios';
 import { reactive } from 'vue';
+import store from "@/scripts/store";
 
 export default {
     name: "Login",
@@ -37,8 +38,10 @@ export default {
         const submit = () => {
             axios.post("/api/account/login", state.form)
             .then((res) => {
-                console.log(res);
-                window.alert("Login!!")
+                store.commit(setAccount, res.data);
+                if(res.data.length > 0) {
+                    window.alert("로그인 성공!");
+                }
             })
         }
 
