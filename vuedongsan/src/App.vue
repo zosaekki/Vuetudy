@@ -1,65 +1,37 @@
 <template>
-
-  <div class="black-bg" v-if="modal === true">
-    <div class="white-bg">
-      <h4>상세페이지</h4>
-      <p>상세페이지 내용</p>
-      <button @click="modal = false">닫기</button>
-    </div>
-  </div>
+  <Modal @modalClose="modal = false" :onerooms="onerooms" :clicked="clicked" :modal="modal" />
 
   <div class="menu">
     <a v-for="(menu, idx) in menuList" :key="idx">{{ menu }}</a>
   </div>
 
-  <div v-for="oneroom in onerooms" :key="oneroom">
-    <img @click="modal = true" :src="oneroom.image" alt="oneroom iamge">
-    <h4>{{ oneroom.title }}</h4>
-    <p>{{ oneroom.content }}</p>
-    <p>$ {{ oneroom.price }}</p>
-  </div>
+  <Discount />
 
-
-  <!-- <div v-for="(product,idx) in products" :key="idx">
-    <h4>{{ product }}</h4>
-    <p>{{ price[idx] }}만원</p>
-    <button @click="click[idx]++">허위매물 신고</button> <span>신고수 : {{ click[idx] }}</span>
-  </div> -->
-
-  <!-- <div>
-    <img src="./assets/room0.jpg" class="romm-img">
-    <h4 @click="modal = true">{{ onerooms[0].title }}</h4> 
-    <p>{{ onerooms[0].price }} 만원</p>
-    <button @click="click[0]++">허위매물 신고</button> <span>신고수 : {{ click[0] }}</span>
-  </div>
-  <div>
-    <img src="./assets/room1.jpg" class="romm-img">
-    <h4>{{ products[1] }}</h4>
-    <p>{{ price[1] }} 만원</p>
-    <button @click="click[1]++">허위매물 신고</button> <span>신고수 : {{ click[1] }}</span>
-  </div>
-  <div>
-    <img src="./assets/room2.jpg" class="romm-img">
-    <h4>{{ products[2] }}</h4>
-    <p>{{ price[2] }} 만원</p>
-    <button @click="click[2]++">허위매물 신고</button> <span>신고수 : {{ click[2] }}</span>
-  </div> -->
+  <Card
+    @openModal="modal = true; clicked = $event" :onerooms="onerooms" />
 </template>
 
 <script>
-import data from './assets/data.js';
+import data from "./assets/data.js";
+import Discount from "./components/Discount.vue";
+import Modal from "./components/Modal.vue";
+import Card from "./components/Card.vue";
 
 export default {
-  name: 'App',
-  data() { // 데이터 보관함
+  name: "App",
+  data() {
+    // 데이터 보관함
     return {
-      menuList : ['Home', 'Products', 'About'],
-      products : ['역삼동원룸', '천호동원룸', '마포구원룸'],
-      price : [60, 70, 80],
+      menuList: ["Home", "Products", "About"],
+      /*
+      products: ['역삼동원룸', '천호동원룸', '마포구원룸'],
+      price: [60, 70, 80],
       click: [0, 0, 0],
-      modal : false,
-      onerooms : data
-    }
+      */
+      modal: false,
+      onerooms: data,
+      clicked: 0,
+    };
   },
   methods: {
     increase() {
@@ -67,8 +39,11 @@ export default {
     },
   },
   components: {
-  }
-}
+    Discount,
+    Modal,
+    Card,
+  },
+};
 </script>
 
 <style>
@@ -83,7 +58,7 @@ div {
 .black-bg {
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   position: fixed;
   padding: 20px;
 }
@@ -117,5 +92,12 @@ div {
 .romm-img {
   width: 100%;
   margin-top: 40px;
+}
+
+.discount {
+  background: #eee;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 5px;
 }
 </style>
