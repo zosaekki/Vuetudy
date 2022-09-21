@@ -1,11 +1,20 @@
 <template>
-  <Modal @modalClose="modal = false" :onerooms="onerooms" :clicked="clicked" :modal="modal" />
+  <Transition name="fade">
+    <Modal @modalClose="modal = false" :onerooms="onerooms" :clicked="clicked" :modal="modal" />
+  </Transition>
 
   <div class="menu">
     <a v-for="(menu, idx) in menuList" :key="idx">{{ menu }}</a>
   </div>
 
   <Discount />
+
+  <div>
+    <button @click="priceSort">가격순 정렬</button>
+    <button @click="priceReverseSort">가격 역순 정렬</button>
+    <button @click="enSort">ABC 순 정렬</button>
+  </div>
+  <button @click="sortBack">되돌리기</button>
 
   <Card
     @openModal="modal = true; clicked = $event" :onerooms="onerooms" />
@@ -29,6 +38,7 @@ export default {
       click: [0, 0, 0],
       */
       modal: false,
+      oneroomsOriginal: [...data],
       onerooms: data,
       clicked: 0,
     };
@@ -37,6 +47,24 @@ export default {
     increase() {
       this.click++;
     },
+    sortBack() {
+      this.onerooms = [...this.oneroomsOriginal];
+    },
+    priceSort() {
+      this.onerooms.sort(function(a,b) {
+        return a.price - b.price;
+      })
+    },
+    priceReverseSort() {
+      this.onerooms.sort(function(a, b) {
+        return b.price - a.price;
+      })
+    },
+    enSort() {
+      this.onerooms.sort(function(a, b) {
+        return a.title < b.title ? -1 : a.title > b.title ? 1 : 0;
+      })
+    }
   },
   components: {
     Discount,
@@ -99,5 +127,29 @@ div {
   padding: 10px;
   margin: 10px;
   border-radius: 5px;
+}
+
+.fade-enter-from {
+  transform: translateY(-1000px);
+}
+
+.fade-enter-active {
+  transition: all 1s;
+}
+
+.fade-enter-to {
+  transform: translateY(0px);
+}
+
+.fade-leave-from {
+  opacity: 1;
+}
+
+.fade-leave-active {
+  transition: all 1s;
+}
+
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
