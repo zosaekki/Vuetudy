@@ -6,6 +6,7 @@ let app = createApp(App)
 app.config.globalProperties.emitter = emitter; // 글로벌 변수보관함, import할 필요 x
 
 import store from './store';
+import './registerServiceWorker'
 
 
 

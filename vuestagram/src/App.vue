@@ -10,16 +10,17 @@
     <img src="./assets/instagram.jpg" class="logo" />
   </div>
 
-  <h4>Hi {{ userName }} {{ age }}</h4>
+  <!-- <h4>Hi {{ userName }} {{ age }}</h4>
   <button @click="$store.commit('changeName')">name</button>
-  <button @click="increaseAge(10)">age</button>
+  <button @click="increaseAge(10)">age</button> -->
 
-  <p>{{ $store.state.more }}</p>
-  <button @click="$store.dispatch('getData')">더보기버튼</button>
+  <!-- <p>{{ $store.state.more }}</p>
+  <button @click="$store.dispatch('getData')">더보기버튼</button> -->
 
   <Container :postData="postData" :step="step" :imgUrl="imgUrl" 
               @write="content = $event" :selectFilter=selectFilter />
-  <button @click="more">더보기</button>
+              
+  <!-- <button @click="more">더보기</button> -->
 
 
   <div class="footer">
@@ -45,7 +46,7 @@ export default {
     return {
       postData: Data,
       moreBtnClick: 0,
-      step: 0,
+      step: 3,
       imgUrl: '',
       content: '',
       selectFilter: '',
