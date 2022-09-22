@@ -10,13 +10,17 @@
     <img src="./assets/logo.png" class="logo" />
   </div>
 
-  <h4>Hi {{ $store.state.name }} {{ $store.state.age }}</h4>
+  <h4>Hi {{ userName }} {{ age }}</h4>
   <button @click="$store.commit('changeName')">name</button>
-  <button @click="$store.commit('increaseAge', 10)">age</button>
+  <button @click="increaseAge(10)">age</button>
+
+  <p>{{ $store.state.more }}</p>
+  <button @click="$store.dispatch('getData')">더보기버튼</button>
 
   <Container :postData="postData" :step="step" :imgUrl="imgUrl" 
               @write="content = $event" :selectFilter=selectFilter />
   <button @click="more">더보기</button>
+
 
   <div class="footer">
     <ul class="footer-button-plus">
@@ -30,6 +34,7 @@
 import Container from './components/Container.vue';
 import Data from './assets/data';
 import axios from 'axios';
+import { mapMutations, mapState } from 'vuex';
 
 export default {
   name: 'App',
@@ -51,7 +56,18 @@ export default {
       this.selectFilter = e;
     });
   },
+  // 계산결과저장용 함수, 함수 사용해도 실행X, 처음 실행하고 값을 간직함, return 필수!!
+  computed: {
+    name() {
+      return this.$store.state.name;
+    },
+    // $store.state 간편하게 꺼내 쓰는 방법
+    ...mapState(['name', 'age', 'likes']),
+    ...mapState({ userName: 'name'})
+  },
   methods: {
+    // vuex mutations 한번에 꺼내 쓰는 방법
+    ...mapMutations(['setMore', 'changeName', 'increaseAge']),
     more() {
       axios.get(`https://codingapple1.github.io/vue/more${this.moreBtnClick}.json`)
         .then(res => {
