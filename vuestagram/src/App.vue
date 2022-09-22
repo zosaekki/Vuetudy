@@ -7,7 +7,7 @@
       <li v-if="step == 1" @click="step++">Next</li>
       <li v-if="step == 2" @click="publish">발행</li>
     </ul>
-    <img src="./assets/logo.png" class="logo" />
+    <img src="./assets/instagram.jpg" class="logo" />
   </div>
 
   <h4>Hi {{ userName }} {{ age }}</h4>
@@ -109,13 +109,13 @@ ul {
 }
 
 .logo {
-  width: 22px;
+  width: 40px;
   margin: auto;
   display: block;
   position: absolute;
   left: 0;
   right: 0;
-  top: 13px;
+  top: 2px;
 }
 
 .header {
