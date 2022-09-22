@@ -6,12 +6,12 @@
             </div>
             <span class="profile-name">{{ postData.name }}</span>
         </div>
-        <div class="post-body"
+        <div class="post-body" :class="postData.filter" @click="$store.commit('clickLikes', postData.id)"
         :style="{ backgroundImage: `url(${postData.postImage})`}">
         >
         </div>
         <div class="post-content">
-            <p>{{ postData.likes }}</p>
+            <p>{{ $store.state.likes[idx] }} Likes</p>
             <p><strong>{{ postData.name }}</strong> {{ postData.content }}</p>
             <p class="date">{{ postData.date }}</p>
         </div>
@@ -22,7 +22,8 @@
 export default {
     name: 'Post',
     props: {
-        postData: Array
+        postData: Array,
+        selectFilter: String,
     }
 }
 </script>

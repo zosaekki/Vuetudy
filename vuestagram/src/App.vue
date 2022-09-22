@@ -1,31 +1,29 @@
 <template>
   <div class="header">
     <ul class="header-button-left">
-      <li>Cancel</li>
+      <li @click="step--">Cancel</li>
     </ul>
     <ul class="header-button-right">
-      <li>Next</li>
+      <li v-if="step == 1" @click="step++">Next</li>
+      <li v-if="step == 2" @click="publish">발행</li>
     </ul>
     <img src="./assets/logo.png" class="logo" />
   </div>
 
-  <Container :postData="postData" />
+  <h4>Hi {{ $store.state.name }} {{ $store.state.age }}</h4>
+  <button @click="$store.commit('changeName')">name</button>
+  <button @click="$store.commit('increaseAge', 10)">age</button>
+
+  <Container :postData="postData" :step="step" :imgUrl="imgUrl" 
+              @write="content = $event" :selectFilter=selectFilter />
   <button @click="more">더보기</button>
 
   <div class="footer">
     <ul class="footer-button-plus">
-      <input type="file" id="file" class="inputfile" />
+      <input @change="upload" accept="image/*" type="file" id="file" class="inputfile" />
       <label for="file" class="input-plus">+</label>
     </ul>
   </div>
-
-  <div v-if="tab == 0">내용0</div>
-  <div v-if="tab == 1">내용1</div>
-  <div v-if="tab == 2">내용2</div>
-
-  <button @click="tab = 0">버튼0</button>
-  <button @click="tab = 1">버튼1</button>
-  <button @click="tab = 2">버튼2</button>
 </template>
 
 <script>
@@ -42,8 +40,16 @@ export default {
     return {
       postData: Data,
       moreBtnClick: 0,
-      tab: 0
+      step: 0,
+      imgUrl: '',
+      content: '',
+      selectFilter: '',
     }
+  },
+  mounted() {
+    this.emitter.on('selectFilter', (e) => {
+      this.selectFilter = e;
+    });
   },
   methods: {
     more() {
@@ -52,6 +58,25 @@ export default {
           this.postData.push(res.data);
           this.moreBtnClick++;
         })
+    },
+    upload(e) {
+      let imgFile = e.target.files;
+      this.imgUrl= URL.createObjectURL(imgFile[0]);
+      this.step++;
+    },
+    publish() {
+      const newPost = {
+        name: "Hyun Min",
+        userImage: "https://placeimg.com/100/100/arch",
+        postImage: this.imgUrl,
+        likes: 36,
+        date: "May 15",
+        liked: false,
+        content: this.content,
+        filter: this.selectFilter
+      };
+      this.postData.unshift(newPost);
+      this.step = 0;
     }
   }
 }
